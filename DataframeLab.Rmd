@@ -32,13 +32,13 @@ Luckily, you can pass the USPersonalExpenditure variable as an argument to the `
 Do this, storing the result in a new variable
 
 ```{r}
-US_spend <- data.frame(USPersonalExpenditure)
+us_spend <- data.frame(USPersonalExpenditure)
 ```
 
 
 What are the current column names of your dataframe?
 ```{r}
-
+colnames(us_spend)
 ```
 
 
@@ -46,32 +46,50 @@ Consider: why are they so strange? (Think about whether you could use a number l
 
 What are the current row names of your dataframe?
 ```{r}
-
+rownames(us_spend)
 ```
 
 
 Add a column "Category" to your data frame that contains the rownames
 
 ```{r}
+us_spend['category'] <- rownames(us_spend)
 
+head(us_spend)
 ```
 
 Consider how this data isn't tidy. Use the `pivot_longer()` function from last class to make the data tidy. 
 
 ```{r}
 
+us <- pivot_longer(data = us_spend, 
+             cols = c(`X1940`, `X1945`,`X1950`,`X1955`,`X1960`), 
+             names_to = "year", 
+             values_to = "spent")
+
+us
 ```
 
 
 How much money was spent on personal care in 1940?
 ```{r}
+cat <- us$category
+year<- us$year
+spent <- us$spent
+cat
+
+
+spent[cat == 'Personal Care'[year == 'X1940']]
+
+
+
 
 ```
 
 
 How much money was spent on Food and Tobacco in 1960?
 ```{r}
-
+spent[cat=='Food and Tobacco'[year == 'X1960']]
 
 ```
 
@@ -79,14 +97,15 @@ How much money was spent on Food and Tobacco in 1960?
 What was the highest expenditure category in 1960?
 ```{r}
 
+cat[spent == max(spent[year == 'X1960'])]
 
 ```
 
 
 Define a function `lowest_category` that takes in a year as a parameter, and returns the lowest spending category of that year
 ```{r}
-
-
+lowest_category <- cat[spent == min(spent[year == min(year)])]
+lowest_category
 
 ```
 
